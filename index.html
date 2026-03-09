@@ -318,7 +318,7 @@ function solve(d){
     {m:"latex",c:"b=(m/2+n)\\xi_2+K_p\\beta",s:"b=("+m+"/2+"+n+")\\cdot"+f(xi,4)+"+"+f(Kp,6)+"\\cdot"+beta+"="+f(b2,6)},
     {m:"latex",c:"c=K_p\\cdot n\\xi_2(\\beta-n\\xi_2)",s:"c="+f(Kp,6)+"\\cdot"+n+"\\cdot"+f(xi,4)+"("+beta+"-"+n+"\\cdot"+f(xi,4)+")="+f(c,6)},
     {m:"latex",c:"D=b^2-4ac",s:"D="+f(b2,6)+"^2-4\\cdot"+f(a,6)+"\\cdot"+f(c,6)+"="+f(D,4)},
-    {m:"latex",c:"\\chi_{2,1/2}=\\frac{b\\pm\\sqrt{D}}{2a}",s:"\\chi_{2,1}="+f(x1,6)+",\\;\\chi_{2,2}="+f(x2,6)},
+    {m:"latex",c:"\\chi_{2,1/2}=\\frac{b\\pm\\sqrt{D}}{2a}",s:"\\chi_{2,1}=\\frac{"+f(b2,6)+"+\\sqrt{"+f(D,4)+"}}{2\\cdot"+f(a,6)+"}="+f(x1,6)+",\\;\\chi_{2,2}=\\frac{"+f(b2,6)+"-\\sqrt{"+f(D,4)+"}}{2\\cdot"+f(a,6)+"}="+f(x2,6)},
     {m:"res",c:"\\boxed{\\chi_2="+f(chi,6)+"}"}
   ]});
 
@@ -327,7 +327,7 @@ function solve(d){
   st.push({t:"Пункт 4. Потоки на выходе",b:[
     {m:"latex",c:"\\dot{q}_2(\\text{C}_n\\text{H}_m)=1-\\xi_2",s:"\\dot{q}_2("+CN+")=1-"+f(xi,4)+"="+f(q2c)},
     {m:"latex",c:"\\dot{q}_2(\\text{CO})=n\\xi_2-\\chi_2",s:"\\dot{q}_2(\\text{CO})="+n+"\\cdot"+f(xi,4)+"-"+f(chi,6)+"="+f(q2co)},
-    {m:"latex",c:"\\dot{q}_2(\\text{CO}_2)=\\chi_2",s:"\\dot{q}_2(\\text{CO}_2)="+f(q2co2)},
+    {m:"latex",c:"\\dot{q}_2(\\text{CO}_2)=\\chi_2",s:"\\dot{q}_2(\\text{CO}_2)="+f(chi,6)+"="+f(q2co2)},
     {m:"latex",c:"\\dot{q}_2(\\text{H}_2\\text{O})=\\beta-n\\xi_2-\\chi_2",s:"\\dot{q}_2(\\text{H}_2\\text{O})="+beta+"-"+n+"\\cdot"+f(xi,4)+"-"+f(chi,6)+"="+f(q2w)},
     {m:"latex",c:"\\dot{q}_2(\\text{H}_2)=(n+m/2)\\xi_2+\\chi_2",s:"\\dot{q}_2(\\text{H}_2)="+(n+m/2)+"\\cdot"+f(xi,4)+"+"+f(chi,6)+"="+f(q2h)}
   ]});
@@ -336,8 +336,16 @@ function solve(d){
   var Hin=q1c*Hi(th.CnHm[0],th.CnHm[2],T1)+q1w*Hi(th.H2O[0],th.H2O[2],T1);
   var Hout=q2c*Hi(th.CnHm[0],th.CnHm[2],T2)+q2co*Hi(th.CO[0],th.CO[2],T2)+q2co2*Hi(th.CO2[0],th.CO2[2],T2)+q2w*Hi(th.H2O[0],th.H2O[2],T2)+q2h*Hi(th.H2[0],th.H2[2],T2);
   var Q1=Hout-Hin;
+  var H1_CnHm=Hi(th.CnHm[0],th.CnHm[2],T1),H1_H2O=Hi(th.H2O[0],th.H2O[2],T1);
+  var H2_CnHm=Hi(th.CnHm[0],th.CnHm[2],T2),H2_CO=Hi(th.CO[0],th.CO[2],T2),H2_CO2=Hi(th.CO2[0],th.CO2[2],T2),H2_H2O=Hi(th.H2O[0],th.H2O[2],T2),H2_H2=Hi(th.H2[0],th.H2[2],T2);
   st.push({t:"Пункт 5. Энергетический баланс",b:[
     {m:"latex",c:"H_i(T)=\\Delta H^\\circ_f+C_p(T-298)"},
+    {m:"text",c:"Энтальпии входных потоков при $T_1="+T1+"$ K:"},
+    {m:"latex",c:"H("+CN+",T_1)=\\Delta H^\\circ_f+C_p(T_1-298)",s:"H("+CN+","+T1+")="+f2(th.CnHm[0])+"+"+f2(th.CnHm[2])+"\\cdot("+T1+"-298)="+f2(H1_CnHm)},
+    {m:"latex",c:"H(\\text{H}_2\\text{O},T_1)=\\Delta H^\\circ_f+C_p(T_1-298)",s:"H(\\text{H}_2\\text{O},"+T1+")="+f2(th.H2O[0])+"+"+f2(th.H2O[2])+"\\cdot("+T1+"-298)="+f2(H1_H2O)},
+    {m:"latex",c:"\\sum\\dot{q}_1 H(T_1)=q_1("+CN+")\\cdot H("+CN+")+q_1(\\text{H}_2\\text{O})\\cdot H(\\text{H}_2\\text{O})",s:"\\sum\\dot{q}_1 H(T_1)="+f(q1c)+"\\cdot("+f2(H1_CnHm)+")+"+f(q1w)+"\\cdot("+f2(H1_H2O)+")="+f2(Hin)},
+    {m:"text",c:"Энтальпии выходных потоков при $T_2="+T2+"$ K:"},
+    {m:"latex",c:"\\sum\\dot{q}_2 H(T_2)",s:"\\sum\\dot{q}_2 H(T_2)="+f(q2c)+"\\cdot("+f2(H2_CnHm)+")+"+f(q2co)+"\\cdot("+f2(H2_CO)+")+"+f(q2co2)+"\\cdot("+f2(H2_CO2)+")+"+f(q2w)+"\\cdot("+f2(H2_H2O)+")+"+f(q2h)+"\\cdot("+f2(H2_H2)+")="+f2(Hout)},
     {m:"latex",c:"Q_1=\\sum\\dot{q}_{2}H(T_2)-\\sum\\dot{q}_{1}H(T_1)",s:"Q_1="+f2(Hout)+"-"+(Hin<0?"("+f2(Hin)+")":f2(Hin))+"="+f2(Q1)+"\\;\\text{Дж/с}"},
     {m:"res",c:"Q_1="+f2(Q1)+"\\;\\text{Дж/с}"}
   ]});
@@ -360,10 +368,10 @@ function solve(d){
   st.push({t:"Пункт 7. Баланс печи",b:[
     {m:"latex",c:"\\dot{q}_3(\\text{O}_2)=(k+j/4)(1+\\alpha)",s:"\\dot{q}_3(\\text{O}_2)=("+k+"+"+j+"/4)(1+"+f(add,4)+")="+f(q3o)},
     {m:"latex",c:"\\dot{q}_3(\\text{N}_2)=\\frac{0.79}{0.21}\\dot{q}_3(\\text{O}_2)",s:"\\dot{q}_3(\\text{N}_2)=\\frac{0.79}{0.21}\\cdot"+f(q3o)+"="+f(q3n)},
-    {m:"latex",c:"\\dot{q}_4(\\text{O}_2)=(k+j/4)(1-\\eta+\\alpha)",s:"\\dot{q}_4(\\text{O}_2)="+f(q4o)},
-    {m:"latex",c:"\\dot{q}_4(\\text{N}_2)=\\dot{q}_3(\\text{N}_2)",s:"\\dot{q}_4(\\text{N}_2)="+f(q4n)},
-    {m:"latex",c:"\\dot{q}_4(\\text{H}_2\\text{O})=\\dot{q}_3("+CK+")\\cdot(j/2)\\cdot\\eta",s:"\\dot{q}_4(\\text{H}_2\\text{O})="+f(q4w2)},
-    {m:"latex",c:"\\dot{q}_4(\\text{CO}_2)=\\dot{q}_3("+CK+")\\cdot k\\cdot\\eta",s:"\\dot{q}_4(\\text{CO}_2)="+f(q4co2f)}
+    {m:"latex",c:"\\dot{q}_4(\\text{O}_2)=(k+j/4)(1-\\eta+\\alpha)",s:"\\dot{q}_4(\\text{O}_2)=("+k+"+"+j+"/4)(1-"+f(conv,4)+"+"+f(add,4)+")="+f(q4o)},
+    {m:"latex",c:"\\dot{q}_4(\\text{N}_2)=\\dot{q}_3(\\text{N}_2)",s:"\\dot{q}_4(\\text{N}_2)="+f(q3n)+"="+f(q4n)},
+    {m:"latex",c:"\\dot{q}_4(\\text{H}_2\\text{O})=\\dot{q}_3("+CK+")\\cdot(j/2)\\cdot\\eta",s:"\\dot{q}_4(\\text{H}_2\\text{O})=1\\cdot("+j+"/2)\\cdot"+f(conv,4)+"="+f(q4w2)},
+    {m:"latex",c:"\\dot{q}_4(\\text{CO}_2)=\\dot{q}_3("+CK+")\\cdot k\\cdot\\eta",s:"\\dot{q}_4(\\text{CO}_2)=1\\cdot"+k+"\\cdot"+f(conv,4)+"="+f(q4co2f)}
   ]});
 
   // P8
@@ -384,11 +392,13 @@ function solve(d){
     {m:"latex",c:"\\sigma_{\\text{см}}=R[(q_A+q_B)\\ln(q_A+q_B)-q_A\\ln q_A-q_B\\ln q_B]"},
     {m:"latex",c:"E_x^{\\text{см}}=T_0\\cdot\\sigma_{\\text{см}}"},
     {m:"text",c:"Реактор ($q_A="+f(q1c)+",\\;q_B="+f(q1w)+"$):"},
-    {m:"latex",c:"\\sigma_{\\text{см,р-р}}",s:"\\sigma_{\\text{см,р-р}}="+f(smR)},
-    {m:"res",c:"E_x^{\\text{см,р-р}}="+T0+"\\cdot"+f(smR)+"="+f2(ExmR)+"\\;\\text{Дж/с}"},
-    {m:"text",c:"Печь ($q_A="+f(qfr)+",\\;q_B="+f(qar)+"$):"},
-    {m:"latex",c:"\\sigma_{\\text{см,п}}",s:"\\sigma_{\\text{см,п}}="+f(smF)},
-    {m:"res",c:"E_x^{\\text{см,печь}}="+T0+"\\cdot"+f(smF)+"="+f2(ExmF)+"\\;\\text{Дж/с}"}
+    {m:"latex",c:"\\sigma_{\\text{см,р-р}}=R[(q_A+q_B)\\ln(q_A+q_B)-q_A\\ln q_A-q_B\\ln q_B]",s:"\\sigma_{\\text{см,р-р}}=8.314[("+f(q1c)+"+"+f(q1w)+")\\ln("+f(q1c)+"+"+f(q1w)+")-"+f(q1c)+"\\ln "+f(q1c)+"-"+f(q1w)+"\\ln "+f(q1w)+"]="+f(smR)},
+    {m:"latex",c:"E_x^{\\text{см,р-р}}=T_0\\cdot\\sigma_{\\text{см,р-р}}",s:"E_x^{\\text{см,р-р}}="+T0+"\\cdot"+f(smR)+"="+f2(ExmR)+"\\;\\text{Дж/с}"},
+    {m:"res",c:"E_x^{\\text{см,р-р}}="+f2(ExmR)+"\\;\\text{Дж/с}"},
+    {m:"text",c:"Печь ($q_A="+f(qfr,4)+",\\;q_B="+f(qar,4)+"$):"},
+    {m:"latex",c:"\\sigma_{\\text{см,п}}=R[(q_A+q_B)\\ln(q_A+q_B)-q_A\\ln q_A-q_B\\ln q_B]",s:"\\sigma_{\\text{см,п}}=8.314[("+f(qfr,4)+"+"+f(qar,4)+")\\ln("+f(qfr,4)+"+"+f(qar,4)+")-"+f(qfr,4)+"\\ln "+f(qfr,4)+"-"+f(qar,4)+"\\ln "+f(qar,4)+"]="+f(smF)},
+    {m:"latex",c:"E_x^{\\text{см,печь}}=T_0\\cdot\\sigma_{\\text{см,п}}",s:"E_x^{\\text{см,печь}}="+T0+"\\cdot"+f(smF)+"="+f2(ExmF)+"\\;\\text{Дж/с}"},
+    {m:"res",c:"E_x^{\\text{см,печь}}="+f2(ExmF)+"\\;\\text{Дж/с}"}
   ]});
 
   // P10
