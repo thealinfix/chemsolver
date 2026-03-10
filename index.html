@@ -438,17 +438,7 @@ function rb(b){
 }
 
 var allO=false;
-var soundFiles=["sounds/А ПУШКИНА ПОЧИТАТЬ МОЖНО !.mp3","sounds/Аааа_блядь_Дыров_проститука_дубайская_1.mp3","sounds/гостмакакич.mp3"];
-function maybePlayFunnySound(){
-  var idx=Math.floor(Math.random()*soundFiles.length);
-  try{
-    var a=new Audio(soundFiles[idx]);
-    var p=a.play&&a.play();
-    if(p&&p.catch)p.catch(function(e){if(window.console&&console.warn)console.warn("Audio play error",e);});
-  }catch(e){}
-}
 function go(){
-  maybePlayFunnySound();
   try{
     var d=rd(),r=solve(d),s=r.sm;
     // Summary
